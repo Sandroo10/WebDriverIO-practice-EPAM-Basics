@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Task List</title>
+<h1>Task List</h1>
+<form id="task-form">
+    <label for="task-name">Task name</label>
+    <input id="task-name" name="task" required>
+    <button>Add task</button>
+</form>
+<ul id="tasks">
+    <li>Read the assignment</li>
+    <li>Run the tests</li>
+</ul>
+<button id="load-tasks">Load more tasks</button>
+<p id="status" role="status">Ready</p>
+<script>
+    const form = document.querySelector('#task-form')
+    const tasks = document.querySelector('#tasks')
+    const loadingStatus = document.querySelector('#status')
+
+    function addTask(name) {
+        const item = document.createElement('li')
+        item.textContent = name
+        tasks.append(item)
+    }
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault()
+        addTask(form.elements.task.value)
+        form.reset()
+    })
+
+    document.querySelector('#load-tasks').addEventListener('click', (event) => {
+        event.currentTarget.disabled = true
+        loadingStatus.textContent = 'Loading...'
+        setTimeout(() => {
+            loadingStatus.textContent = 'Tasks loaded'
+            const button = document.createElement('button')
+            button.id = 'show-loaded-task'
+            button.textContent = 'Show loaded task'
+            button.addEventListener('click', () => {
+                addTask('Review the results')
+                button.remove()
+            })
+            form.after(button)
+        }, 600)
+    })
+</script>
+</html>
